@@ -1,32 +1,36 @@
 package com.botob.supernetwork.sdk.http
 
 import kotlinx.coroutines.runBlocking
-import org.junit.After
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Test
+import java.net.HttpURLConnection
 
 class SuperClientTest {
+    companion object {
+        private const val GET_URL = "https://www.wikipedia.org"
 
-    @Before
-    fun setUp() {
-
-    }
-
-    @After
-    fun cleanUp() {
-
+        // Source https://stackoverflow.com/a/9770981
+        private const val POST_URL = "https://httpbin.org/post"
+        private const val POST_BODY = "Hello World"
     }
 
     @Test
-    fun get() {
-        runBlocking {
-            val response = SuperClient().get("https://google.com")
-            Assert.assertEquals(200, response.code)
-        }
+    fun get() = runBlocking {
+        val response = SuperClient().get(GET_URL)
+
+        Assert.assertEquals(HttpURLConnection.HTTP_OK, response.code)
     }
 
     @Test
-    fun post() {
+    fun post() = runBlocking {
+        val response = SuperClient().post(
+            POST_URL,
+            headers = mapOf("Content-Type" to "text/plain"),
+            body = POST_BODY
+        )
+
+        Assert.assertEquals(HttpURLConnection.HTTP_OK, response.code)
+        val expected = "\"data\": \"$POST_BODY\""
+        Assert.assertTrue(response.payload.contains(expected))
     }
 }
