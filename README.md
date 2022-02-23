@@ -16,13 +16,18 @@ On top of that, the **sdk** offers the option to log the requests and their asso
 
 ## Engineering choices
 
-### Architecture
-
-The architecture follows an MVVM approach. Longer term, it could have a few more abstractions around the Jetpack libraries to ease adaptations down the road.
-
 ### Network specifics
 
+**HttpURLConnection** is used as the core to execute the requests. Coroutines are used to simplify the execution of network requests in a background thread.
+
+
 ### Library packaging
+
+A Gradle task could be created to pack the **sdk** module into a .aar. Another task could publish this archive onto Maven or Artifactory.
+
+### Local persistence
+
+**Room** is used to persist the network logs on the device.
 
 ## Legal
 
