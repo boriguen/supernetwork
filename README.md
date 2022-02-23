@@ -1,12 +1,12 @@
 # _SuperNetwork_
 
-##### _This project mainly focuses on providing an _HttpUrlConnection_ wrapper as library to help developers do GET and POST requests seamlessly - February 2022_
+##### _This project mainly focuses on providing an HttpURLConnection wrapper as library to help developers do GET and POST requests seamlessly - February 2022_
 
 #### By _**Boris Guenebaut**_
 
 ## Description
 
-The **sdk** module includes the logic to wrap _HttpUrlConnection_ and provide easy public methods to make GET and POST requests.
+The **sdk** module includes the logic to wrap _HttpURLConnection_ and provide easy public methods to make GET and POST requests.
 On top of that, the **sdk** offers the option to log the requests and their associated response code.
 
 ## Setup
