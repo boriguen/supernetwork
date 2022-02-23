@@ -1,5 +1,6 @@
 package com.botob.supernetwork.sdk.http
 
+import com.botob.supernetwork.sdk.logging.SuperLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.DataOutputStream
@@ -9,12 +10,12 @@ import java.net.URL
 /**
  * [SuperClient] is the class wrapping [HttpURLConnection] and offering easy HTTP request methods.
  */
-class SuperClient {
+class SuperClient(private val logger: SuperLogger) {
     companion object {
         /**
          * The code returned when an exception happened at the client level.
          */
-        const val EXCEPTION_CODE = -1;
+        const val EXCEPTION_CODE = -1
     }
 
     /**
@@ -86,11 +87,17 @@ class SuperClient {
                     }
                 }
                 val data = connection.inputStream.bufferedReader().use { it.readText() }
-                return@withContext SuperResponse(request, connection.responseCode, data)
+                val response = SuperResponse(request, connection.responseCode, data)
+                logger.logNetworkEvent(request, response)
+
+                return@withContext response
             } catch (exception: Exception) {
                 // TODO: improve exception handling by either throwing a dedicated exception or
                 // refining this current behavior.
-                return@withContext SuperResponse(request, EXCEPTION_CODE, exception.toString())
+                val response = SuperResponse(request, EXCEPTION_CODE, exception.toString())
+                logger.logNetworkEvent(request, response)
+
+                return@withContext response
             } finally {
                 connection.disconnect()
             }
